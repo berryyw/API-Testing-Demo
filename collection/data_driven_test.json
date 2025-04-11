@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "53c36085-30af-4057-9ece-bb0a02c9c7f1",
+		"name": "数据驱动登录测试",
+		"description": "使用CSV数据批量测试登录接口",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1677193"
+	},
+	"item": [
+		{
+			"name": "用户登录 - 数据驱动",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 动态断言：根据CSV中的预期结果校验",
+							"pm.test(`响应状态码应为${pm.iterationData.get('expected_code')}`, function() {",
+							"    pm.response.to.have.status(pm.iterationData.get('expected_code'));",
+							"});",
+							"",
+							"// 记录测试结果到控制台",
+							"console.log(`测试数据: ${pm.iterationData.toObject()}`);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

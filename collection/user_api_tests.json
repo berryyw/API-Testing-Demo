@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "88fc8f17-95f1-489c-a75b-e15c6601de69",
+		"name": "用户管理系统API测试",
+		"description": "包含用户创建/查询/删除全流程测试",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1677193"
+	},
+	"item": [
+		{
+			"name": "创建用户",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 基础断言",
+							"pm.test(\"状态码201\", function() {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// 业务逻辑断言",
+							"pm.test(\"响应包含用户ID\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"});",
+							"",
+							"// 性能断言",
+							"pm.test(\"响应时间<500ms\", function() {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{username}}\",\n    \"job\": \"{{job}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询用户",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"用户信息匹配\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.first_name).to.eql(pm.variables.get('expected_name'));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,4 @@
+email,password,expected_code
+eve.holt@reqres.in,cityslicka,200
+test@invalid.com,wrongpass,400
+,missing_password,401
